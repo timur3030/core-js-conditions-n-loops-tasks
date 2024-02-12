@@ -213,15 +213,36 @@ function isContainNumber(num, digit) {
  * In this task, the use of methods of the Array and String classes is not allowed.
  *
  * @param {number[]} arr - The array to check.
- * @return {number} The index of the balance point, or -1 if none exists.
+ * @return {number} The index of the oddIndex point, or -1 if none exists.
  *
  * @example:
- *  [1, 2, 5, 3, 0] => 2    => 1 + 2 === 3 + 0 then balance element is 5 and its index = 2
- *  [2, 3, 9, 5] => 2       => 2 + 3 === 5 then balance element is 9 and its index = 2
- *  [1, 2, 3, 4, 5] => -1   => no balance element
+ *  [1, 2, 5, 3, 0] => 2    => 1 + 2 === 3 + 0 then oddIndex element is 5 and its index = 2
+ *  [2, 3, 9, 5] => 2       => 2 + 3 === 5 then oddIndex element is 9 and its index = 2
+ *  [1, 2, 3, 4, 5] => -1   => no oddIndex element
  */
-function getBalanceIndex(/* arr */) {
-  throw new Error('Not implemented');
+function getBalanceIndex(arr) {
+  const middle = arr.length % 2;
+  const evenIndex = arr.length / 2;
+  const oddIndex = Math.floor(evenIndex);
+  let left = 0;
+  let right = 0;
+
+  if (middle !== 0) {
+    for (let i = 0; i < arr.length; i += 1) {
+      if (i < oddIndex) left += arr[i];
+      if (i > oddIndex) right += arr[i];
+    }
+    if (left === right) return oddIndex;
+    return -1;
+  }
+
+  for (let i = 0; i < arr.length; i += 1) {
+    if (i < evenIndex) left += arr[i];
+    if (i > evenIndex) right += arr[i];
+  }
+  if (left === right) return evenIndex;
+
+  return -1;
 }
 
 /**
@@ -324,8 +345,37 @@ function shuffleChar(/* str, iterations */) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  const numbers = [];
+  let num = number;
+  while (num > 0) {
+    numbers.unshift(num % 10);
+    num = Math.floor(num / 10);
+  }
+  let i = numbers.length - 2;
+  while (i >= 0 && numbers[i] >= numbers[i + 1]) {
+    i -= 1;
+  }
+  if (i === -1) {
+    return number;
+  }
+  let j = numbers.length - 1;
+  while (numbers[j] <= numbers[i]) {
+    j -= 1;
+  }
+  const temp = numbers[i];
+  numbers[i] = numbers[j];
+  numbers[j] = temp;
+
+  const reversed = numbers.splice(i + 1).reverse();
+  numbers.push(...reversed);
+
+  let result = 0;
+  for (let k = 0; k < numbers.length; k += 1) {
+    result = result * 10 + numbers[k];
+  }
+
+  return result;
 }
 
 module.exports = {
