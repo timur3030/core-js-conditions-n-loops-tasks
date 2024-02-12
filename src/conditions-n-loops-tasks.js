@@ -273,26 +273,17 @@ function isContainNumber(num, digit) {
  *  [1, 2, 3, 4, 5] => -1   => no oddIndex element
  */
 function getBalanceIndex(arr) {
-  const middle = arr.length % 2;
-  const evenIndex = arr.length / 2;
-  const oddIndex = Math.floor(evenIndex);
-  let left = 0;
-  let right = 0;
-
-  if (middle !== 0) {
-    for (let i = 0; i < arr.length; i += 1) {
-      if (i < oddIndex) left += arr[i];
-      if (i > oddIndex) right += arr[i];
+  for (let i = 1; i < arr.length - 1; i += 1) {
+    let left = 0;
+    let right = 0;
+    for (let j = 0; j < i; j += 1) {
+      left += arr[j];
     }
-    if (left === right) return oddIndex;
-    return -1;
+    for (let j = i + 1; j < arr.length; j += 1) {
+      right += arr[j];
+    }
+    if (left === right) return i;
   }
-
-  for (let i = 0; i < arr.length; i += 1) {
-    if (i < evenIndex) left += arr[i];
-    if (i > evenIndex) right += arr[i];
-  }
-  if (left === right) return evenIndex;
 
   return -1;
 }
